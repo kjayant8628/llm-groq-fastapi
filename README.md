@@ -26,7 +26,9 @@ https://llm-groq-fastapi.onrender.com
 Endpoint
 
 POST /query
-🧠 Architecture Overview
+## 🧠 Architecture Overview
+
+```text
         ┌───────────────┐
         │    Client     │
         │ (Postman /    │
@@ -45,7 +47,6 @@ POST /query
         │  Groq LLM API   │
         │ (Llama 3.1)     │
         └─────────────────┘
-Flow
 
 Client sends POST request to /query
 
