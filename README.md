@@ -1,125 +1,132 @@
-# Groq LLM Query API
+LLM Query API
+Productionized FastAPI Microservice (Groq LLM)
 
-A minimal, production-ready FastAPI application that exposes a single `POST /query` endpoint powered by the [Groq](https://groq.com) API.
+A minimal, production-ready REST API that exposes a POST endpoint to query a Groq-hosted Large Language Model.
 
----
+This project demonstrates the ability to:
 
-## Project Structure
+Productionize an AI-backed service
 
-```
-.
-├── main.py           # FastAPI application
-├── requirements.txt  # Python dependencies
-├── .env.example      # Environment variable template
-├── render.yaml       # Render deployment config
-└── README.md
-```
+Securely manage environment variables
 
----
+Deploy to cloud infrastructure (Render)
 
-## Local Setup
+Pin runtime and dependency versions
 
-### 1. Clone / download the project
+Expose a publicly accessible HTTPS endpoint
 
-```bash
-cd groq-fastapi
-```
+Maintain clean, minimal backend architecture
 
-### 2. Create and activate a virtual environment
+🌍 Live Deployment
 
-```bash
-python3.11 -m venv venv
-source venv/bin/activate      # macOS / Linux
-# venv\Scripts\activate       # Windows
-```
+Base URL
 
-### 3. Install dependencies
+https://llm-groq-fastapi.onrender.com
 
-```bash
-pip install -r requirements.txt
-```
+Endpoint
 
-### 4. Configure environment variables
+POST /query
+🧠 Architecture Overview
+        ┌───────────────┐
+        │    Client     │
+        │ (Postman /    │
+        │  External App)│
+        └───────┬───────┘
+                │ HTTPS
+                ▼
+        ┌─────────────────┐
+        │   Render Cloud  │
+        │  (FastAPI App)  │
+        └───────┬─────────┘
+                │
+                │ Groq SDK
+                ▼
+        ┌─────────────────┐
+        │  Groq LLM API   │
+        │ (Llama 3.1)     │
+        └─────────────────┘
+Flow
 
-```bash
-cp .env.example .env
-# Open .env and set your GROQ_API_KEY
-```
+Client sends POST request to /query
 
-Get your free API key at https://console.groq.com.
+FastAPI validates input using Pydantic
 
-### 5. Run the server
+Server calls Groq LLM API
 
-```bash
-uvicorn main:app --reload
-```
+LLM response is returned as structured JSON
 
-The API is now live at `http://127.0.0.1:8000`.  
-Interactive docs: `http://127.0.0.1:8000/docs`
+Client receives AI-generated answer
 
----
+The application is stateless and does not store any data.
 
-## API Reference
-
-### `POST /query`
-
-**Request body**
-```json
+📌 Example Request
+POST https://llm-groq-fastapi.onrender.com/query
+Content-Type: application/json
 {
   "query": "What is the capital of France?"
 }
-```
-
-**Success response** `200 OK`
-```json
+📌 Example Response
 {
-  "answer": "Paris is the capital of France."
+  "answer": "The capital of France is Paris."
 }
-```
+🛠 Tech Stack
 
-**Error responses**
+Python 3.11
 
-| Status | Reason |
-|--------|--------|
-| `422`  | Validation error (empty query) |
-| `500`  | `GROQ_API_KEY` not set |
-| `503`  | Cannot reach Groq API |
-| `4xx`  | Groq returned an API error |
+FastAPI
 
----
+Uvicorn
 
-## Postman Example
+Groq API (Llama 3.1 model)
 
-| Field   | Value |
-|---------|-------|
-| Method  | `POST` |
-| URL     | `http://127.0.0.1:8000/query` |
-| Headers | `Content-Type: application/json` |
-| Body (raw JSON) | `{ "query": "What is the capital of France?" }` |
+Render (Cloud deployment)
 
----
+Pydantic (Validation)
 
-## Deploy on Render
+🔐 Environment Configuration
 
-1. Push this project to a GitHub repository.
-2. Go to [render.com](https://render.com) → **New Web Service** → connect your repo.
-3. Render auto-detects `render.yaml`. Confirm the settings.
-4. In **Environment Variables**, add:
-   - `GROQ_API_KEY` → your actual key
-5. Click **Deploy**. Your public URL will appear in the dashboard.
+Environment variables (managed securely in Render):
 
-> **Note:** Render's free tier spins down after inactivity. Upgrade to a paid plan for always-on availability.
+GROQ_API_KEY=your_api_key
+GROQ_MODEL=llama-3.1-8b-instant
 
----
+Secrets are not committed to version control.
 
-## Model
+🧪 Local Development
+Clone
+git clone https://github.com/kjayant8628/llm-groq-fastapi.git
+cd llm-groq-fastapi
+Create Virtual Environment
+python -m venv venv
+venv\Scripts\activate
+Install Dependencies
+pip install -r requirements.txt
+Run Locally
+uvicorn main:app --reload
 
-The app uses `llama3-8b-8192` by default. To change it, update the `MODEL` constant in `main.py`.
+Server runs at:
 
-Other Groq-supported models: `llama3-70b-8192`, `mixtral-8x7b-32768`, `gemma2-9b-it`.
+http://127.0.0.1:8000
+☁ Deployment Notes
 
----
+Runtime pinned using .python-version (Python 3.11)
 
-## License
+Dependencies version-locked for stability
 
-MIT
+Secure environment variable management
+
+Public HTTPS endpoint
+
+Stateless architecture
+
+No database
+
+No embeddings
+
+No vector search
+
+No local model hosting
+
+🎯 Project Goal
+
+To demonstrate the ability to productionize an AI-powered backend service using clean architecture, secure deployment practices, and industry-standard tools.
